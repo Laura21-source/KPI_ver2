@@ -6,32 +6,42 @@
     <script src="site/release/go.js"></script>
     <script>
         function init() {
+            <!-- Модели содержат объекты данныъ JS, а не узлы GoJS или ссылки-->
+
+            <!-- Создание диаграммы-->
             var $ = go.GraphObject.make;
-            myDiagram = $(go.Diagram, "myDiagramDiv");
+            var myDiagram = $(go.Diagram, "myDiagramDiv"); <!-- Ссылка на диагрмму в переменной myDiagram-->
+
+            <!-- Массив для данных узла-->
             var nodeDataArray = [
                 {key: "Alpha", color: "lime"},
                 {key: "Beta", color: "cyan"},
                 {key: "Zeta", isGroup: true, color: "pink"},
-                {key: "Delta", color: "pink", group: "Zeta"},
+                {key: "Delta",  group: "Zeta",  color: "pink"},
                 {key: "Gamma", color: "maroon", group: "Zeta"}
             ];
+            <!-- Массив для данных ссылки-->
             var linkDataArray = [
-                {to: "Beta", from: "Alpha", color: "red"},
+                {to: "Beta", from: "Alpha", color: "white"},
                 {from: "Delta", to: "Gamma"},
-                {from: "Alpha", to: "Zeta"}
+                {from: "Alpha", to: "Delta"}
+
             ];
+            <!-- Создание модели-->
             myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
 
+            <!-- nodeTemple определяет стиль для всех узлов-->
             myDiagram.nodeTemple =
-                $(go.Node, "Auto",
-                    $(go.Shape, "RoundedRectangle", {fill: "white"},
+                $(go.Node, "Auto",  <!-- параметр "Auto" со помощью него все последующие элементы располагаются внутри первого-->
+                    $(go.Shape, "RoundedRectangle", {fill: "black"},
+                        <!--"fill" - заливка, "color" - цвет-->
                         new go.Binding("fill", "color")
                     ),
-                    $(go.TextBlock, "text", {margin: 10 },
+                    $(go.TextBlock, "text", {margin: 20 },
                         new go.Binding("text","key")
                     )
                 );
-
+            <!-- nodeTemple определяет стиль для всех ссылок-->
             myDiagram.linkTemple =
                 $(go.Link,
                     $(go.Shape, {strokeWidth: 3},
@@ -44,12 +54,8 @@
                 );
         }
     </script>
-
 </head>
-
 <body onload="init()">
 <div id="myDiagramDiv" style="height: 500px; width: 500px; border: 5px solid black"></div>
-
 </body>
-
 </html>
