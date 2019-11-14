@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>KPI</title>
+    <script src="site/release/go.js"></script>
+    <script>
+        function init() {
+            var $ = go.GraphObject.make;
+            myDiagram = $(go.Diagram, "myDiagramDiv");
+            var nodeDataArray = [
+                {key: "Alpha", color: "lime"},
+                {key: "Beta", color: "cyan"},
+                {key: "Zeta", isGroup: true, color: "pink"},
+                {key: "Delta", color: "pink", group: "Zeta"},
+                {key: "Gamma", color: "maroon", group: "Zeta"}
+            ];
+            var linkDataArray = [
+                {to: "Beta", from: "Alpha", color: "red"},
+                {from: "Delta", to: "Gamma"},
+                {from: "Alpha", to: "Zeta"}
+            ];
+            myDiagram.model = new go.GraphLinksModel(nodeDataArray, linkDataArray);
+
+            myDiagram.nodeTemple =
+                $(go.Node, "Auto",
+                    $(go.Shape, "RoundedRectangle", {fill: "white"},
+                        new go.Binding("fill", "color")
+                    ),
+                    $(go.TextBlock, "text", {margin: 10 },
+                        new go.Binding("text","key")
+                    )
+                );
+
+            myDiagram.linkTemple =
+                $(go.Link,
+                    $(go.Shape, {strokeWidth: 3},
+                        new go.Binding("stroke", "color")
+                    ),
+
+                    $(go.Shape, {toArrow: "Standard", stroke: null},
+                        new go.Binding("fill", "color")
+                    )
+                );
+        }
+    </script>
+
+</head>
+
+<body onload="init()">
+<div id="myDiagramDiv" style="height: 500px; width: 500px; border: 5px solid black"></div>
+
+</body>
+
+</html>
